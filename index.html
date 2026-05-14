@@ -4,93 +4,326 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>李嘉琪 | 人民邮电出版社少儿图书编辑</title>
-    <!-- 引入 Tailwind CSS 样式库 -->
-    <script src="jsdelivr.net"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+        /* 全局核心视觉样式锁死，无需依赖外部下载 */
+        :root {
+            --bg-color: #fbfaf7;
+            --primary-text: #1c1917;
+            --secondary-text: #44403c;
+            --accent-gold: #854d0e;
+            --accent-bg: #fef08a;
+            --card-bg: #ffffff;
+            --border-color: #f5f5f4;
+            --dark-card: #1c1917;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* 导航栏排版 */
+        header {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            letter-spacing: 0.05em;
+        }
+        .nav-links a {
+            color: var(--secondary-text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-left: 24px;
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover { color: var(--accent-gold); }
+
+        /* 主体布局 */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+        
+        /* 炫酷的 Hero 欢迎区 */
+        .hero-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 56px;
+            box-shadow: 0 4px 20px rgba(217, 119, 6, 0.03);
+        }
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            background-color: rgba(254, 240, 138, 0.8);
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            color: #0c0a09;
+        }
+        .hero-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+        }
+        .hero-bio {
+            color: var(--secondary-text);
+            font-size: 1.05rem;
+            max-width: 720px;
+        }
+
+        /* 作品网格排版 */
+        .section-title-wrap {
+            display: flex;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-text);
+            white-space: nowrap;
+            margin-right: 16px;
+        }
+        .title-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #e7e5e4;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            margin-bottom: 56px;
+        }
+        
+        /* 炫酷的图书卡片效果 */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(217, 119, 6, 0.3);
+            box-shadow: 0 12px 30px rgba(217, 119, 6, 0.06);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .card-tag {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #78350f;
+            background-color: #fef3c7;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .card-year {
+            font-size: 0.85rem;
+            color: #a8a29e;
+            font-family: monospace;
+        }
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--primary-text);
+            margin-bottom: 10px;
+        }
+        .card-desc {
+            font-size: 0.9rem;
+            color: #57534e;
+            margin-bottom: 24px;
+        }
+        .card-footer {
+            border-top: 1px solid #f5f5f4;
+            padding-top: 14px;
+            font-size: 0.8rem;
+            color: #78716c;
+        }
+        .meta-row { margin-bottom: 4px; }
+        .meta-label { font-weight: 600; color: #44403c; }
+
+        /* 高级黑金黑块合作区 */
+        .contact-section {
+            background-color: var(--dark-card);
+            color: #f5f5f4;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .contact-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #fef08a;
+            margin-bottom: 12px;
+        }
+        .contact-p {
+            font-size: 0.95rem;
+            color: #a8a29e;
+            margin-bottom: 24px;
+        }
+        .inner-box {
+            background-color: #262220;
+            border: 1px solid #3c3633;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        .inner-row {
+            margin-bottom: 8px;
+            color: #d6d3d1;
+        }
+        .inner-row:last-child { margin-bottom: 0; }
+        .inner-label { color: #78716c; width: 80px; display: inline-block; }
+        .highlight-text { color: #ffffff; font-weight: 500; }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            font-size: 0.75rem;
+            color: #a8a29e;
+            border-top: 1px solid var(--border-color);
+            background-color: #ffffff;
+            margin-top: 80px;
+        }
+
+        /* 手机端自适应适配 */
+        @media (max-width: 640px) {
+            .hero-section, .contact-section { padding: 24px; }
+            .hero-title { font-size: 1.75rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
-<body class="bg-[#fcfbf9] text-gray-800 min-h-screen flex flex-col selection:bg-amber-100">
+<body>
 
-    <!-- 顶部导航栏 -->
-    <header class="border-b border-gray-100 bg-white/80 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
-            <span class="font-serif text-xl font-bold tracking-wider text-amber-900">李嘉琪 · 出版空间</span>
-            <nav class="space-x-6 text-sm font-medium text-gray-600">
-                <a href="#about" class="hover:text-amber-800 transition">关于</a>
-                <a href="#portfolio" class="hover:text-amber-800 transition">作品</a>
-                <a href="#contact" class="hover:text-amber-800 transition">合作</a>
+    <!-- 导航栏 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">李嘉琪 · 出版空间</div>
+            <nav class="nav-links">
+                <a href="#about">关于</a>
+                <a href="#portfolio">作品</a>
+                <a href="#contact">合作</a>
             </nav>
         </div>
     </header>
 
-    <!-- 主体内容 -->
-    <main class="max-w-4xl mx-auto px-6 py-12 flex-grow w-full">
+    <!-- 主体 -->
+    <main>
         
-        <!-- Hero 个人简介区 -->
-        <section id="about" class="mb-16 scroll-mt-20">
-            <div class="bg-gradient-to-br from-amber-50/60 to-orange-50/30 rounded-2xl p-8 md:p-10 border border-amber-100/50 shadow-xs">
-                <span class="inline-block text-xs font-semibold tracking-widest text-amber-800 bg-amber-100/80 px-2.5 py-1 rounded-md mb-4">PROFILE</span>
-                <h1 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4 tracking-tight">你好，我是李嘉琪</h1>
-                <p class="text-lg text-amber-900/90 font-medium mb-6">人民邮电出版社 · 少儿图书责任编辑</p>
-                <p class="text-gray-600 leading-relaxed max-w-2xl text-base">
-                    专注少儿教育、幼儿启蒙、分级阅读及绘本类图书的策划与精细化编辑校对工作。深耕纸媒出版，秉持工信出版集团严谨的“三审三校”作风，用匠心与高品质死磕每一个细节，陪伴中国儿童的启蒙阅读之路。
-                </p>
-            </div>
+        <!-- 个人名片区 -->
+        <section id="about" class="hero-section">
+            <div class="badge">PROFILE</div>
+            <h1 class="hero-title">你好，我是李嘉琪</h1>
+            <p class="hero-subtitle">人民邮电出版社 · 少儿图书责任编辑</p>
+            <p class="hero-bio">
+                专注少儿教育、幼儿启蒙、分级阅读及绘本类图书的策划与精细化编辑校对工作。深耕纸媒出版，秉持工信出版集团严谨的“三审三校”作风，用匠心与高品质死磕每一个细节，陪伴中国儿童的启蒙阅读之路。
+            </p>
         </section>
 
-        <!-- 作品橱窗区 -->
-        <section id="portfolio" class="mb-16 scroll-mt-20">
-            <div class="flex items-center space-x-3 mb-8">
-                <h2 class="text-2xl font-serif font-bold text-gray-900">主要编辑作品</h2>
-                <div class="h-px flex-grow bg-gray-100"></div>
+        <!-- 作品区 -->
+        <section id="portfolio">
+            <div class="section-title-wrap">
+                <h2 class="section-title">主要编辑作品</h2>
+                <div class="title-line"></div>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- 作品 1 -->
-                <div class="bg-white border border-gray-100 rounded-xl p-6 shadow-xs hover:shadow-md hover:border-amber-200/60 transition duration-300 flex flex-col justify-between">
+            <div class="grid">
+                <!-- 卡片 1 -->
+                <div class="card">
                     <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="text-xs font-medium text-amber-800 bg-amber-50 px-2 py-0.5 rounded">幼小衔接 · 控笔启蒙</span>
-                            <span class="text-xs text-gray-400 font-mono">2025</span>
+                        <div class="card-header">
+                            <span class="card-tag">幼小衔接 · 控笔启蒙</span>
+                            <span class="card-year">2025</span>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2 font-serif">《小羊上山学前400字分级描红：预备级 控笔与部首》</h3>
-                        <p class="text-sm text-gray-500 mb-4 leading-relaxed">针对学龄前儿童研发的规范书写启蒙书，打通从‘认读’到‘书写’的幼小衔接核心闭环。</p>
+                        <h3 class="card-title">《小羊上山学前400字分级描红：预备级 控笔与部首》</h3>
+                        <p class="card-desc">针对学龄前儿童研发的规范书写启蒙书，打通从‘认读’到‘书写’的幼小衔接核心闭环。</p>
                     </div>
-                    <div class="border-t border-gray-50 pt-3 mt-2 text-xs text-gray-500 space-y-1">
-                        <div><span class="font-medium text-gray-700">担任职务：</span>第一责任编辑</div>
-                        <div><span class="font-medium text-gray-700">联合运营：</span>童趣出版有限公司</div>
+                    <div class="card-footer">
+                        <div class="meta-row"><span class="meta-label">担任职务：</span>第一责任编辑</div>
+                        <div class="meta-row"><span class="meta-label">联合运营：</span>童趣出版有限公司</div>
                     </div>
                 </div>
 
-                <!-- 作品 2 -->
-                <div class="bg-white border border-gray-100 rounded-xl p-6 shadow-xs hover:shadow-md hover:border-amber-200/60 transition duration-300 flex flex-col justify-between">
+                <!-- 卡片 2 -->
+                <div class="card">
                     <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="text-xs font-medium text-amber-800 bg-amber-50 px-2 py-0.5 rounded">幼小衔接 · 分级书写</span>
-                            <span class="text-xs text-gray-400 font-mono">2025</span>
+                        <div class="card-header">
+                            <span class="card-tag">幼小衔接 · 分级书写</span>
+                            <span class="card-year">2025</span>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-2 font-serif">《小羊上山学前400字分级描红：第3级》</h3>
-                        <p class="text-sm text-gray-500 mb-4 leading-relaxed">配合国民级少儿分级阅读大IP《小羊上山》核心字表定制的同步字形描红工具书。</p>
+                        <h3 class="card-title">《小羊上山学前400字分级描红：第3级》</h3>
+                        <p class="card-desc">配合国民级少儿分级阅读大IP《小羊上山》核心字表定制的同步字形描红工具书。</p>
                     </div>
-                    <div class="border-t border-gray-50 pt-3 mt-2 text-xs text-gray-500 space-y-1">
-                        <div><span class="font-medium text-gray-700">担任职务：</span>第一责任编辑</div>
-                        <div><span class="font-medium text-gray-700">联合运营：</span>童趣出版有限公司</div>
+                    <div class="card-footer">
+                        <div class="meta-row"><span class="meta-label">担任职务：</span>第一责任编辑</div>
+                        <div class="meta-row"><span class="meta-label">联合运营：</span>童趣出版有限公司</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 业务合作区 -->
-        <section id="contact" class="scroll-mt-20">
-            <div class="bg-stone-900 text-stone-100 rounded-2xl p-8 md:p-10 shadow-lg">
-                <h2 class="text-xl font-serif font-bold text-amber-400 mb-3">出版合作与投稿</h2>
-                <p class="text-sm text-stone-400 mb-6 leading-relaxed">
-                    欢迎优秀的少儿绘本作者、幼儿分级阅读原创作者、以及少儿教育工具书机构洽谈合作。
-                </p>
-                <div class="bg-stone-800/80 rounded-xl p-5 border border-stone-700/50 text-sm space-y-2 text-stone-300">
-                    <p class="flex items-center"><span class="w-20 font-medium text-stone-400">官方渠道：</span>请通过 <span class="text-white font-medium mx-1">人民邮电出版社</span> 官方渠道投递公函。</p>
-                    <p class="flex items-center"><span class="w-20 font-medium text-stone-400">联系地址：</span>北京市东城区夕照寺街14号</p>
+        <!-- 合作区 -->
+        <section id="contact" class="contact-section">
+            <h2 class="contact-title">出版合作与投稿说明</h2>
+            <p class="contact-p">欢迎优秀的少儿绘本作者、幼儿分级阅读原创作者、以及少儿教育工具书机构洽谈合作。</p>
+            
+            <div class="inner-box">
+                <div class="inner-row">
+                    <span class="inner-label">官方渠道：</span>
+                    <span class="highlight-text">请通过 人民邮电出版社 官方渠道投递公函。</span>
+                </div>
+                <div class="inner-row">
+                    <span class="inner-label">工作地点：</span>
+                    <span class="highlight-text">北京市东城区夕照寺街14号</span>
                 </div>
             </div>
         </section>
@@ -98,7 +331,7 @@
     </main>
 
     <!-- 页脚 -->
-    <footer class="border-t border-gray-100 bg-white py-8 text-center text-xs text-gray-400">
+    <footer>
         <p>© 2026 李嘉琪 个人出版空间. All rights reserved.</p>
     </footer>
 
